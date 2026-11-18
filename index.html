@@ -63,7 +63,12 @@
           d="M20 9a2 2 0 0 1 2 2v10.286a.71.71 0 0 1-1.212.502l-2.202-2.202A2 2 0 0 0 17.172 19H10a2 2 0 0 1-2-2v-1"
         />
       </symbol>
+      <symbol id="icon-clock" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" />
+        <polyline points="12 6 12 12 16 14" />
+      </symbol>
     </svg>
+    <a href="#campus-stores" class="skip-link">Skip to main content</a>
     <main>
       <div id="campus-stores">
         <div class="examstrip">
@@ -73,7 +78,7 @@
             <div class="briefcopy">
               <h2>Would you keep this product?</h2>
               <p>
-                Work a shift at the campus media desk. Get the Film Society’s
+                Work a shift at the campus media desk. Get the Film Society's
                 kit out for its screening, handle the return, and leave the next
                 shift enough information to finish the job. Use the time control
                 to move the story forward.
@@ -111,12 +116,16 @@
             <small>Desk time</small><strong data-clock></strong>
           </div>
         </header>
-        <aside class="shift">
+        <aside class="shift" role="region" aria-label="Current shift scenario">
           <div>
             <b data-shift-title></b>
             <p data-shift></p>
           </div>
-          <button type="button" data-action="advance"></button>
+          <button
+            type="button"
+            data-action="advance"
+            aria-label="Advance to next shift phase"
+          ></button>
         </aside>
         <div class="shell">
           <nav aria-label="Store records" data-nav></nav>
@@ -133,6 +142,68 @@
           </button>
         </div>
       </div>
+      <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+      <!-- Confirmation dialog -->
+      <dialog id="confirm-dialog" aria-labelledby="confirm-title">
+        <div class="confirm-body">
+          <h3 id="confirm-title"></h3>
+          <p id="confirm-desc"></p>
+          <div class="confirm-actions">
+            <button type="button" data-confirm="cancel">Cancel</button>
+            <button type="button" data-confirm="ok" class="primary">
+              Confirm
+            </button>
+          </div>
+        </div>
+      </dialog>
+
+      <!-- Return & Condition Check-In Dialog -->
+      <dialog id="return-dialog" aria-labelledby="return-dialog-title">
+        <form method="dialog" id="return-form" class="dialog-body">
+          <h3 id="return-dialog-title">Equipment Check-In</h3>
+          <p id="return-dialog-subtitle" class="muted"></p>
+          <input type="hidden" name="loanNum" id="return-loan-num" />
+          <div class="form">
+            <label>
+              <span>Returning person</span>
+              <select name="returnedBy" id="return-by-select" required></select>
+            </label>
+            <label>
+              <span>Equipment condition</span>
+              <select name="condition" id="return-condition-select" required>
+                <option value="good">Good condition (return to shelf)</option>
+                <option value="inspection">Needs inspection (quarantine)</option>
+                <option value="damaged">Damaged / Requires repair</option>
+              </select>
+            </label>
+            <label class="full">
+              <span>Return note (optional)</span>
+              <input
+                type="text"
+                name="returnNote"
+                id="return-note-input"
+                placeholder="e.g. Cables intact, tested working"
+                maxlength="300"
+              />
+            </label>
+            <div
+              id="return-discrepancy-warning"
+              class="form-row-info full alert"
+              hidden
+            >
+              ⚠️ <strong>Custody discrepancy:</strong> Expected <span id="return-expected-custodian"></span>. 
+              The audit trail will note that <span id="return-actual-person"></span> dropped off the unit.
+            </div>
+          </div>
+          <div class="confirm-actions">
+            <button type="button" data-return-action="cancel">Cancel</button>
+            <button type="submit" class="primary" data-return-action="submit">
+              Complete check-in
+            </button>
+          </div>
+        </form>
+      </dialog>
     </main>
   </body>
 </html>

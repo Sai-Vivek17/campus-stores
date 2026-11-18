@@ -23,6 +23,24 @@ body > main {
   stroke-linejoin: round;
 }
 
+/* ── Skip-to-content link (accessibility) ── */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 999;
+  background: var(--sel, #233e4c);
+  color: #fff;
+  padding: 8px 16px;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 0 0 6px 6px;
+}
+.skip-link:focus {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 #campus-stores {
   color-scheme: light dark;
   --ink: light-dark(#202c35, #ecf0f0);
@@ -38,6 +56,12 @@ body > main {
   --mark: light-dark(#bd502f, #f2a585);
   --ok: light-dark(#e3f1e8, #2d4838);
   --oktxt: light-dark(#25523d, #bedac8);
+  --warn: light-dark(#fef3cd, #42361c);
+  --warntxt: light-dark(#856404, #f5d47a);
+  --danger: light-dark(#fde8e8, #4a2020);
+  --dangertxt: light-dark(#991b1b, #f8b4b4);
+  --info: light-dark(#e0f2fe, #1e3a5f);
+  --infotxt: light-dark(#0369a1, #bae6fd);
   background: var(--paper);
   color: var(--ink);
   font:
@@ -58,18 +82,19 @@ body > main {
 #campus-stores h1,
 #campus-stores h2,
 #campus-stores h3,
+#campus-stores h4,
 #campus-stores p {
   margin: 0;
 }
 #campus-stores h1 {
   font:
-    600 clamp(24px, 4cqw, 33px)/1.13 "Archivo",
+    600 clamp(22px, 3.5cqw, 30px)/1.15 "Archivo",
     system-ui,
     sans-serif;
   letter-spacing: -0.05em;
 }
 #campus-stores h2 {
-  font-size: 20px;
+  font-size: 19px;
   letter-spacing: -0.03em;
 }
 #campus-stores h3 {
@@ -90,7 +115,7 @@ body > main {
   flex-wrap: wrap;
   background: var(--desk);
   border-bottom: 1px solid var(--line);
-  padding: 9px 18px;
+  padding: 8px 18px;
   color: var(--quiet);
   font-size: 13px;
 }
@@ -105,41 +130,50 @@ body > main {
 #campus-stores .briefcopy {
   color: var(--ink);
   max-width: 79ch;
-  padding: 12px 0 5px;
+  padding: 10px 0 4px;
   display: grid;
   gap: 8px;
 }
-#campus-stores .mast,
-#campus-stores .brandblock,
-#campus-stores .shift,
-#campus-stores .sectionhead,
-#campus-stores .statusbar,
-#campus-stores .buttons {
+#campus-stores .mast {
+  padding: 14px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+#campus-stores .brandblock {
   display: flex;
   align-items: center;
   gap: 10px;
 }
-#campus-stores .mast {
-  padding: 17px 20px;
-  justify-content: space-between;
-  flex-wrap: wrap;
-}
 #campus-stores .brandmark {
   background: var(--mark);
   color: var(--inv);
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   display: grid;
   place-items: center;
   border-radius: 9px;
+  flex-shrink: 0;
 }
 #campus-stores .brandmark svg {
-  width: 25px;
-  height: 25px;
+  width: 24px;
+  height: 24px;
 }
+#campus-stores .mast-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1 1 auto;
+  justify-content: flex-end;
+}
+
+
 #campus-stores .clock {
   display: grid;
   text-align: right;
+  flex-shrink: 0;
 }
 #campus-stores .clock strong {
   font-variant-numeric: tabular-nums;
@@ -147,12 +181,15 @@ body > main {
 #campus-stores .shift {
   background: var(--memo);
   color: var(--memotxt);
-  padding: 12px 19px;
+  padding: 10px 18px;
+  display: flex;
   justify-content: space-between;
+  align-items: center;
   border-block: 1px solid var(--line);
+  gap: 12px;
 }
 #campus-stores .shift div {
-  max-width: 67ch;
+  max-width: 68ch;
 }
 #campus-stores .shift b {
   font-size: 13px;
@@ -173,7 +210,8 @@ body > main {
   border-radius: 6px;
   background: var(--paper);
   min-width: 0;
-  padding: 7px 9px;
+  padding: 7px 10px;
+  transition: border-color 0.15s ease, background 0.15s ease, transform 0.1s ease;
 }
 #campus-stores button {
   font-size: 13px;
@@ -182,6 +220,14 @@ body > main {
 }
 #campus-stores button:hover {
   border-color: var(--sel);
+}
+#campus-stores button:active {
+  transform: scale(0.98);
+}
+#campus-stores button[disabled] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 #campus-stores .primary {
   background: var(--sel);
@@ -194,8 +240,8 @@ body > main {
 }
 #campus-stores .shell {
   display: grid;
-  grid-template-columns: 155px minmax(0, 1fr);
-  min-height: 315px;
+  grid-template-columns: 165px minmax(0, 1fr);
+  min-height: 330px;
 }
 #campus-stores nav {
   background: var(--nav);
@@ -213,6 +259,8 @@ body > main {
   border: 1px solid transparent;
   background: transparent;
   font-weight: 500;
+  padding: 8px 10px;
+  border-radius: 6px;
 }
 #campus-stores nav button[aria-pressed="true"] {
   background: var(--sel);
@@ -224,16 +272,19 @@ body > main {
   flex-shrink: 0;
 }
 #campus-stores .page {
-  padding: 17px 17px 20px;
+  padding: 18px 20px;
   min-width: 0;
 }
 #campus-stores .sectionhead,
 #campus-stores .statusbar {
+  display: flex;
   justify-content: space-between;
+  align-items: center;
   flex-wrap: wrap;
+  gap: 10px;
 }
 #campus-stores .sectionhead {
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 #campus-stores .sectionhead small {
   margin-top: 2px;
@@ -245,35 +296,66 @@ body > main {
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: 8px;
-  padding: 9px 0;
+  padding: 10px 0;
 }
 #campus-stores .row small,
 #campus-stores label span {
   display: block;
 }
+
+/* ── Status Tags ── */
 #campus-stores .tag {
   background: var(--desk);
   color: var(--quiet);
-  font-size: 12px;
-  padding: 3px 7px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
   border-radius: 5px;
   display: inline-block;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
 }
-#campus-stores .good {
+#campus-stores .good,
+#campus-stores .tag.good {
   background: var(--ok);
   color: var(--oktxt);
 }
+#campus-stores .tag.overdue {
+  background: var(--danger);
+  color: var(--dangertxt);
+}
+#campus-stores .tag.due-now {
+  background: var(--warn);
+  color: var(--warntxt);
+}
+#campus-stores .tag.due-soon {
+  background: var(--info);
+  color: var(--infotxt);
+}
+#campus-stores .tag.upcoming {
+  background: var(--desk);
+  color: var(--quiet);
+}
+#campus-stores .tag.inspection {
+  background: var(--warn);
+  color: var(--warntxt);
+}
+
 #campus-stores .record {
   margin-top: 14px;
-  padding: 12px 13px;
+  padding: 12px 14px;
   background: var(--desk);
   border-left: 3px solid var(--sel);
+  border-radius: 0 6px 6px 0;
 }
 #campus-stores .record p {
   margin-top: 5px;
 }
 #campus-stores .buttons {
+  display: flex;
+  align-items: center;
   flex-wrap: wrap;
+  gap: 8px;
   margin: 10px 0;
 }
 #campus-stores .buttons button[aria-pressed="true"] {
@@ -288,8 +370,8 @@ body > main {
 #campus-stores .form {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-  margin: 10px 0;
+  gap: 12px;
+  margin: 12px 0;
 }
 #campus-stores .form label {
   font-size: 13px;
@@ -297,7 +379,7 @@ body > main {
   min-width: 0;
 }
 #campus-stores .form label span {
-  margin-bottom: 3px;
+  margin-bottom: 4px;
 }
 #campus-stores .form :is(select, input, textarea) {
   width: 100%;
@@ -323,7 +405,211 @@ body > main {
   font-size: 12px;
   background: transparent;
 }
-@container (max-width:650px) {
+
+/* ── Item Status List (Request Detail) ── */
+#campus-stores .item-status-list {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 12px;
+  display: grid;
+  gap: 6px;
+}
+#campus-stores .item-status-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+/* ── Slip Notes & Custody History ── */
+#campus-stores .slip-note {
+  font-size: 12px;
+  color: var(--quiet);
+  margin-top: 4px;
+  font-style: italic;
+}
+#campus-stores .custody-trail {
+  font-size: 11px;
+  color: var(--quiet);
+  margin-top: 3px;
+  display: block;
+}
+
+/* ── Kit Fulfillment Inline Info Rows ── */
+#campus-stores .form-row-info {
+  padding: 8px 10px;
+  background: var(--desk);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-size: 13px;
+}
+#campus-stores .form-row-info.alert {
+  border-color: var(--mark);
+  color: var(--mark);
+}
+
+/* ── Inventory: Loan Holder Chip ── */
+#campus-stores .loan-holder {
+  font-size: 11px;
+  color: var(--quiet);
+  display: block;
+}
+
+/* ── Smart Shift Handover Overview ── */
+.handover-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.metric-card {
+  padding: 10px 12px;
+  background: var(--desk);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.metric-card.alert {
+  border-color: var(--mark);
+  background: light-dark(#fff6f4, #2a1f1b);
+}
+.metric-card strong {
+  display: block;
+  font-size: 20px;
+  font-variant-numeric: tabular-nums;
+  margin-top: 2px;
+}
+.metric-card small {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--quiet);
+}
+
+.handover-item-card {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  background: var(--paper);
+  display: grid;
+  gap: 8px;
+}
+.handover-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.handover-item-body {
+  font-size: 13px;
+  color: var(--quiet);
+  display: grid;
+  gap: 4px;
+}
+.handover-item-body strong {
+  color: var(--ink);
+}
+.handover-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+  flex-wrap: wrap;
+}
+
+/* ── Toast notifications ── */
+#toast-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 8px;
+  pointer-events: none;
+}
+.toast {
+  background: light-dark(#233e4c, #c5dce4);
+  color: light-dark(#fff, #172b34);
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+  animation: toast-in 0.25s ease, toast-out 0.25s ease 2.8s forwards;
+  pointer-events: auto;
+  max-width: 360px;
+}
+.toast.warn {
+  background: light-dark(#bd502f, #f2a585);
+  color: #fff;
+}
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(12px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes toast-out {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-8px); }
+}
+
+/* ── Dialog Modals ── */
+dialog {
+  border: 1px solid light-dark(#d2dcdf, #475158);
+  border-radius: 12px;
+  background: light-dark(#fff, #232a30);
+  color: light-dark(#202c35, #ecf0f0);
+  padding: 0;
+  max-width: 440px;
+  width: 92vw;
+  box-shadow: 0 10px 36px rgba(0, 0, 0, 0.25);
+}
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.45);
+}
+.confirm-body,
+.dialog-body {
+  padding: 20px;
+}
+.confirm-body h3,
+.dialog-body h3 {
+  font-size: 17px;
+  margin-bottom: 6px;
+}
+.confirm-body p,
+.dialog-body p {
+  font-size: 13px;
+  color: light-dark(#526370, #b9c5cb);
+  margin-bottom: 14px;
+}
+.confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 14px;
+}
+.confirm-actions button {
+  padding: 7px 16px;
+  border-radius: 6px;
+  border: 1px solid light-dark(#d2dcdf, #475158);
+  background: light-dark(#fff, #232a30);
+  color: light-dark(#202c35, #ecf0f0);
+  cursor: pointer;
+  font-weight: 600;
+}
+.confirm-actions .primary {
+  background: light-dark(#233e4c, #c5dce4);
+  color: light-dark(#fff, #172b34);
+  border-color: light-dark(#233e4c, #c5dce4);
+}
+
+/* ── Responsive breakpoints ── */
+@container (max-width:680px) {
   #campus-stores .shell {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -336,7 +622,15 @@ body > main {
   }
   #campus-stores nav button {
     gap: 4px;
-    padding: 5px 7px;
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+  #campus-stores .mast-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  #campus-stores .clock {
+    text-align: left;
   }
   #campus-stores .shift {
     flex-wrap: wrap;
@@ -344,15 +638,8 @@ body > main {
   #campus-stores .page {
     padding: 14px 12px;
   }
-  #campus-stores .mast {
-    padding: 12px;
-  }
-  #campus-stores .examstrip,
-  #campus-stores .shift {
-    padding: 9px 12px;
-  }
 }
-@container (max-width:420px) {
+@container (max-width:440px) {
   #campus-stores .form {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -360,12 +647,13 @@ body > main {
     display: none;
   }
   #campus-stores .row {
-    gap: 5px;
+    gap: 6px;
   }
 }
 @media (pointer: coarse) {
   #campus-stores button,
-  #campus-stores select {
+  #campus-stores select,
+  #campus-stores input {
     min-height: 44px;
   }
 }
